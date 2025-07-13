@@ -24,7 +24,7 @@ import com.example.spendwise.data.roomDb.repository.ExpenseDataRepository
 import com.example.spendwise.data.roomDb.database.ExpenseDatabase
 import com.example.spendwise.domain.ExpenseUseCase
 import com.example.spendwise.presentation.model.BottomNavItem
-import com.example.spendwise.presentation.ui.ExpenseEntryScreen
+import com.example.spendwise.presentation.ui.homeTab.ExpenseEntryScreen
 import com.example.spendwise.presentation.ui.ViewExpenseScreen
 import com.example.spendwise.presentation.ui.ViewSpendAnalysisScreen
 import com.example.spendwise.presentation.viewModel.ExpenseViewModel
@@ -34,16 +34,16 @@ import com.example.spendwise.ui.theme.SpendWiseTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val expenseDao = ExpenseDatabase.buildDatabase(this)!!.getExpenseDao
+        val repository = ExpenseDataRepository(expenseDao = expenseDao)
+        val useCase = ExpenseUseCase()
+        val viewModel = ExpenseViewModel(
+            expenseUseCase = useCase,
+            expenseDataRepository = repository,
+        )
+
         enableEdgeToEdge()
         setContent {
-            val expenseDao = ExpenseDatabase.buildDatabase(this)!!.getExpenseDao
-            val repository = ExpenseDataRepository(expenseDao = expenseDao)
-            val useCase = ExpenseUseCase()
-            val viewModel = ExpenseViewModel(
-                expenseUseCase = useCase,
-                expenseDataRepository = repository,
-            )
-
             val navController = rememberNavController()
             val items = listOf(
                 BottomNavItem.Home,
@@ -56,7 +56,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     bottomBar = {
                         NavigationBar {
-                            val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+                            val currentRoute =
+                                navController.currentBackStackEntryAsState().value?.destination?.route
                             items.forEach { item ->
                                 NavigationBarItem(
                                     selected = currentRoute == item.route,
@@ -75,7 +76,11 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable(route = BottomNavItem.Home.route) { HomeScreen(viewModel = viewModel) }
                         composable(route = BottomNavItem.Expense.route) { ExpenseScreen(viewModel = viewModel) }
-                        composable(route = BottomNavItem.Analysis.route) { SpendAnalysisScreen(viewModel = viewModel) }
+                        composable(route = BottomNavItem.Analysis.route) {
+                            SpendAnalysisScreen(
+                                viewModel = viewModel
+                            )
+                        }
                     }
                 }
             }

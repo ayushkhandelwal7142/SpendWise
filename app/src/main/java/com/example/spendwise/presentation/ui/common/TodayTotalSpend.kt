@@ -1,4 +1,4 @@
-package com.example.spendwise.presentation.ui
+package com.example.spendwise.presentation.ui.common
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Text
@@ -8,12 +8,10 @@ import androidx.compose.ui.text.font.FontWeight
 
 @Composable
 fun TodayTotalSpend(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     todayTotalSpent: Double,
 ) {
-    Row(
-        modifier = modifier
-    ) {
+    Row(modifier = modifier) {
         Text(
             text = "Today's Total Spend = ",
             fontWeight = FontWeight.Bold

@@ -54,11 +54,11 @@ fun DatePicker(
         modifier = modifier
             .fillMaxWidth()
             .border(
-                width = 2.dp,
+                width = 1.dp,
                 shape = RoundedCornerShape(8.dp),
                 color = Color.Black
             )
-            .padding(4.dp)
+            .padding(10.dp)
             .clickable { if (isChecked) showDatePicker = showDatePicker.not() },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,

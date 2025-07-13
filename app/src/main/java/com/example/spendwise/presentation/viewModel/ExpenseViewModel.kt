@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.spendwise.data.roomDb.repository.ExpenseDataRepository
@@ -176,9 +177,9 @@ class ExpenseViewModel(
         inputStream?.close()
         outputStream.close()
 
-        val imagePath = file.absolutePath
+        val fileUri = file.toUri()
 
-        updateReceiptImageUri(uri = imagePath)
+        updateReceiptImageUri(uri = fileUri.toString())
     }
 
     fun clearImageUri() {
