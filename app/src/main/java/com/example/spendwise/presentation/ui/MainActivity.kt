@@ -14,6 +14,10 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
@@ -27,6 +31,7 @@ import com.example.spendwise.presentation.model.BottomNavItem
 import com.example.spendwise.presentation.ui.homeTab.HomeTabScreen
 import com.example.spendwise.presentation.ui.expenseTab.ExpenseTabScreen
 import com.example.spendwise.presentation.ui.spendAnalysisTab.SpendAnalysisTabScreen
+import com.example.spendwise.presentation.ui.switchThemeTab.ThemeScreen
 import com.example.spendwise.presentation.viewModel.ExpenseViewModel
 import com.example.spendwise.ui.theme.SpendWiseTheme
 
@@ -44,14 +49,17 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
         setContent {
+            var isDarkTheme by remember { mutableStateOf(false) }
+
             val navController = rememberNavController()
             val items = listOf(
                 BottomNavItem.Home,
                 BottomNavItem.Expense,
-                BottomNavItem.Analysis
+                BottomNavItem.Analysis,
+                BottomNavItem.Theme
             )
 
-            SpendWiseTheme {
+            SpendWiseTheme(darkTheme = isDarkTheme) {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     bottomBar = {
@@ -79,6 +87,12 @@ class MainActivity : ComponentActivity() {
                         composable(route = BottomNavItem.Analysis.route) {
                             SpendAnalysisScreen(
                                 viewModel = viewModel
+                            )
+                        }
+                        composable(BottomNavItem.Theme.route) {
+                            ThemeScreen(
+                                isDarkTheme = isDarkTheme,
+                                toggleTheme = { isDarkTheme = isDarkTheme.not() }
                             )
                         }
                     }
