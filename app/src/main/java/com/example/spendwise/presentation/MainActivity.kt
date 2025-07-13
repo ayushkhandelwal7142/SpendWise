@@ -24,7 +24,7 @@ import com.example.spendwise.data.roomDb.repository.ExpenseDataRepository
 import com.example.spendwise.data.roomDb.database.ExpenseDatabase
 import com.example.spendwise.domain.ExpenseUseCase
 import com.example.spendwise.presentation.model.BottomNavItem
-import com.example.spendwise.presentation.ui.homeTab.ExpenseEntryScreen
+import com.example.spendwise.presentation.ui.homeTab.HomeTabScreen
 import com.example.spendwise.presentation.ui.ViewExpenseScreen
 import com.example.spendwise.presentation.ui.ViewSpendAnalysisScreen
 import com.example.spendwise.presentation.viewModel.ExpenseViewModel
@@ -89,7 +89,7 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun HomeScreen(viewModel: ExpenseViewModel) {
-        ExpenseEntryScreen(viewModel = viewModel)
+        HomeTabScreen(viewModel = viewModel)
     }
 
     @Composable

@@ -47,7 +47,7 @@ val LocalExpenseEntryState = compositionLocalOf<ExpenseEntryScreenState> {
 
 @RequiresApi(value = Build.VERSION_CODES.O)
 @Composable
-fun ExpenseEntryScreen(viewModel: ExpenseViewModel) {
+fun HomeTabScreen(viewModel: ExpenseViewModel) {
     val uiInteractionState by viewModel.expenseUiInteractionState.collectAsState()
     val uiState = uiInteractionState.expenseEntryScreenUiState
     val selectedDate = uiInteractionState.selectedDateText
