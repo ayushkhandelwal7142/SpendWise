@@ -18,7 +18,7 @@ fun TodayTotalSpend(
         )
 
         Text(
-            text = "$$todayTotalSpent",
+            text = "₹$todayTotalSpent",
             fontWeight = FontWeight.Bold,
         )
     }

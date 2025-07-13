@@ -43,7 +43,7 @@ fun ExpenseItem(
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                Text(text = "$ $amount")
+                Text(text = "₹$amount")
             }
 
             Row {

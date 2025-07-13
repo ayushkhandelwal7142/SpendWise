@@ -1,4 +1,4 @@
-package com.example.spendwise.presentation
+package com.example.spendwise.presentation.ui
 
 import android.os.Build
 import android.os.Bundle
@@ -26,7 +26,7 @@ import com.example.spendwise.domain.ExpenseUseCase
 import com.example.spendwise.presentation.model.BottomNavItem
 import com.example.spendwise.presentation.ui.homeTab.HomeTabScreen
 import com.example.spendwise.presentation.ui.expenseTab.ExpenseTabScreen
-import com.example.spendwise.presentation.ui.ViewSpendAnalysisScreen
+import com.example.spendwise.presentation.ui.spendAnalysisTab.SpendAnalysisTabScreen
 import com.example.spendwise.presentation.viewModel.ExpenseViewModel
 import com.example.spendwise.ui.theme.SpendWiseTheme
 
@@ -100,7 +100,7 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun SpendAnalysisScreen(viewModel: ExpenseViewModel) {
-        ViewSpendAnalysisScreen(
+        SpendAnalysisTabScreen(
             viewModel = viewModel,
         )
 

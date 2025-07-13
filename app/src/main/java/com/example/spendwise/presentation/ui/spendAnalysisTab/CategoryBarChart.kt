@@ -1,4 +1,4 @@
-package com.example.spendwise.presentation.ui
+package com.example.spendwise.presentation.ui.spendAnalysisTab
 
 import android.graphics.Color
 import androidx.compose.runtime.Composable
