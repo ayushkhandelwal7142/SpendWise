@@ -19,6 +19,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
@@ -32,7 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.spendwise.data.roomDb.model.ExpenseCategoryEnum
-import com.example.spendwise.presentation.model.ExpenseEntryScreenState
+import com.example.spendwise.presentation.model.HomeTabScreenState
 import com.example.spendwise.presentation.ui.common.TodayTotalSpend
 import com.example.spendwise.presentation.viewModel.ExpenseViewModel
 import com.example.spendwise.presentation.viewModel.uiState.UiState.ERROR
@@ -41,8 +42,8 @@ import com.example.spendwise.presentation.viewModel.uiState.UiState.LOADING
 import com.example.spendwise.presentation.viewModel.uiState.UiState.SUCCESS
 import com.example.spendwise.ui.theme.SpendWiseTheme
 
-val LocalExpenseEntryState = compositionLocalOf<ExpenseEntryScreenState> {
-    error("ExpenseEntryScreenStates not provided")
+val LocalHomeTabScreenState = compositionLocalOf<HomeTabScreenState> {
+    error("LocalHomeTabScreenState not provided")
 }
 
 @RequiresApi(value = Build.VERSION_CODES.O)
@@ -74,7 +75,7 @@ fun HomeTabScreen(viewModel: ExpenseViewModel) {
     }
 
     val state = remember {
-        ExpenseEntryScreenState(
+        HomeTabScreenState(
             title = title,
             isTitleError = isTitleError,
             amountText = amountText,
@@ -88,7 +89,7 @@ fun HomeTabScreen(viewModel: ExpenseViewModel) {
         )
     }
 
-    CompositionLocalProvider(value = LocalExpenseEntryState provides state) {
+    CompositionLocalProvider(value = LocalHomeTabScreenState provides state) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -159,6 +160,10 @@ fun HomeTabScreen(viewModel: ExpenseViewModel) {
 
             SubmitButton(viewModel = viewModel)
         }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.updateTodayTotalSpend()
     }
 }
 

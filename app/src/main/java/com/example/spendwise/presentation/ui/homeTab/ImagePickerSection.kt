@@ -25,7 +25,7 @@ import com.example.spendwise.R
 fun ImagePickerSection(
     onPickImage: () -> Unit,
 ) {
-    val state = LocalExpenseEntryState.current
+    val state = LocalHomeTabScreenState.current
     val painter = rememberAsyncImagePainter(model = state.receiptImageUrl.value)
     Row(
         modifier = Modifier

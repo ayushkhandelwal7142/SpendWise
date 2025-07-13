@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun AmountInput() {
-    val state = LocalExpenseEntryState.current
+    val state = LocalHomeTabScreenState.current
     OutlinedTextField(
         modifier = Modifier
             .fillMaxWidth()

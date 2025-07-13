@@ -8,10 +8,10 @@ import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.spendwise.data.roomDb.repository.ExpenseDataRepository
 import com.example.spendwise.data.roomDb.model.CategoryWiseSpendModel
 import com.example.spendwise.data.roomDb.model.ExpenseCategoryEnum
 import com.example.spendwise.data.roomDb.model.ExpenseEntity
+import com.example.spendwise.data.roomDb.repository.ExpenseDataRepository
 import com.example.spendwise.domain.ExpenseUseCase
 import com.example.spendwise.presentation.viewModel.uiState.ExpenseUiInteractionState
 import com.example.spendwise.presentation.viewModel.uiState.UiState
@@ -34,13 +34,6 @@ class ExpenseViewModel(
     private val expenseDataRepository: ExpenseDataRepository,
 ) : ViewModel() {
 
-
-    init {
-        viewModelScope.launch {
-            updateTodayTotalSpend()
-        }
-    }
-
     private val _expenseUiInteractionState = MutableStateFlow(ExpenseUiInteractionState())
     val expenseUiInteractionState = _expenseUiInteractionState.asStateFlow()
 
@@ -60,7 +53,8 @@ class ExpenseViewModel(
         _expenseUiInteractionState.update { it.copy(newExpenseImageUrl = uri) }
     }
 
-    fun convertDateInMillisToLocalDate(dateInMillis: Long) = expenseUseCase.convertDateInMillisToLocalDate(dateInMillis = dateInMillis)
+    fun convertDateInMillisToLocalDate(dateInMillis: Long) =
+        expenseUseCase.convertDateInMillisToLocalDate(dateInMillis = dateInMillis)
 
     fun getTodayDate(): String {
         return LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
@@ -132,12 +126,16 @@ class ExpenseViewModel(
                 updateExpenseEntryScreenUiState(state = SUCCESS)
             } catch (e: Exception) {
                 Log.d("AYUSH::", "AYUSH:: ${e.localizedMessage ?: "Error"}")
-                updateExpenseEntryScreenUiState(state = ERROR(e.localizedMessage ?: "Error Adding Data to RoomDb"))
+                updateExpenseEntryScreenUiState(
+                    state = ERROR(
+                        e.localizedMessage ?: "Error Adding Data to RoomDb"
+                    )
+                )
             }
         }
     }
 
-    private suspend fun updateTodayTotalSpend() {
+    fun updateTodayTotalSpend() {
         val today = LocalDate.now()
         val todayInMillis = today
             .atStartOfDay(ZoneId.systemDefault())
@@ -148,18 +146,18 @@ class ExpenseViewModel(
 
         var totalAmount = 0.0
         try {
-            expenseDataRepository.getExpensesForDate(start, end)
-                .collect { expenseList ->
-                    totalAmount = expenseList.sumOf { it.amount }
-                    _expenseUiInteractionState.update {
-                        it.copy(todayTotalSpent = totalAmount)
+            viewModelScope.launch {
+                expenseDataRepository.getExpensesForDate(start, end)
+                    .collect { expenseList ->
+                        totalAmount = expenseList.sumOf { it.amount }
+                        _expenseUiInteractionState.update {
+                            it.copy(todayTotalSpent = totalAmount)
+                        }
                     }
-                }
+            }
         } catch (e: Exception) {
             Log.d("AYUSH::", "AYUSH:: ${e.localizedMessage ?: "Error"}")
         }
-
-        Log.d("AYUSH::", "AYUSH:: totalAMount = $totalAmount")
     }
 
     fun updateSelectedDate(dateInMillis: Long) {

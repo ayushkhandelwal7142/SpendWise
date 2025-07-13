@@ -1,4 +1,4 @@
-package com.example.spendwise.presentation.ui
+package com.example.spendwise.presentation.ui.common
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -131,5 +131,5 @@ fun convertDateInMillisToLocalDate(dateInMillis: Long): String {
 @Preview
 @Composable
 private fun CalendarPreview() {
-    //DatePicker {}
+    //DatePicker() {}
 }

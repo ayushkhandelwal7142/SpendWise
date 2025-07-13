@@ -13,7 +13,7 @@ private const val MAX_CHARS = 100
 
 @Composable
 fun NotesInput() {
-    val state = LocalExpenseEntryState.current
+    val state = LocalHomeTabScreenState.current
     OutlinedTextField(
         modifier = Modifier
             .fillMaxWidth()

@@ -1,4 +1,4 @@
-package com.example.spendwise.presentation.ui.homeTab
+package com.example.spendwise.presentation.ui.expenseTab
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -6,18 +6,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.spendwise.presentation.ui.common.DatePicker
 
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun DateSelector(
+fun DateView(
     modifier: Modifier = Modifier,
     dateText: String,
+    isChecked: Boolean,
     onDateSelected: (Long?) -> Unit,
 ) {
-    val state = LocalHomeTabScreenState.current
+    val state = LocalExpenseTabScreenState.current
     DatePicker(
         modifier = modifier,
         date = dateText,
-        isChecked = true,
+        isChecked = isChecked,
     ) { millis ->
         state.selectedDateInMillis.value = millis
         onDateSelected(millis)

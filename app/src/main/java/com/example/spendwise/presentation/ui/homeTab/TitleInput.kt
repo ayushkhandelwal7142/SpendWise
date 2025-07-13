@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun TitleInput() {
-    val state = LocalExpenseEntryState.current
+    val state = LocalHomeTabScreenState.current
     OutlinedTextField(
         modifier = Modifier
             .fillMaxWidth()

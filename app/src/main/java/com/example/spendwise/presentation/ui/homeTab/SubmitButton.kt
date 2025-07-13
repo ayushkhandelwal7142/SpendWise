@@ -16,7 +16,7 @@ import java.time.ZoneId
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SubmitButton(viewModel: ExpenseViewModel) {
-    val state = LocalExpenseEntryState.current
+    val state = LocalHomeTabScreenState.current
     Button(
         modifier = Modifier
             .fillMaxWidth()
