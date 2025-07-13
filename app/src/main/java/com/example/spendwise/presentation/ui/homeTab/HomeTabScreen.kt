@@ -6,6 +6,11 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,6 +20,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +38,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
+import com.example.spendwise.R
 import com.example.spendwise.data.roomDb.model.ExpenseCategoryEnum
 import com.example.spendwise.presentation.model.HomeTabScreenState
 import com.example.spendwise.presentation.ui.common.TodayTotalSpend
@@ -65,6 +76,18 @@ fun HomeTabScreen(viewModel: ExpenseViewModel) {
     val isAmountError = remember { mutableStateOf(false) }
     val isSelectedCategoryError = remember { mutableStateOf(false) }
     val isDateError = remember { mutableStateOf(false) }
+    val successAnimationVisible = remember { mutableStateOf(false) }
+
+    val composition by rememberLottieComposition(
+        spec = LottieCompositionSpec.RawRes(R.raw.success_animation)
+    )
+    val progress by animateLottieCompositionAsState(
+        composition = composition,
+        iterations = 1,
+        isPlaying = successAnimationVisible.value,
+        speed = 1.5f,
+        restartOnPlay = false
+    )
 
     val imagePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
@@ -90,79 +113,102 @@ fun HomeTabScreen(viewModel: ExpenseViewModel) {
     }
 
     CompositionLocalProvider(value = LocalHomeTabScreenState provides state) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.White),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly,
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center,
         ) {
-            when (uiState) {
-                is LOADING -> Box(modifier = Modifier.fillMaxSize()) { CircularProgressIndicator() }
-                is SUCCESS -> {
-                    Toast.makeText(context, "Expense added", Toast.LENGTH_SHORT).show()
-                    viewModel.updateExpenseEntryScreenUiState(IDLE)
-                }
-
-                is ERROR -> {
-                    Toast.makeText(context, uiState.errorMsg, Toast.LENGTH_SHORT).show()
-                    viewModel.updateExpenseEntryScreenUiState(IDLE)
-                }
-
-                IDLE -> {}
-            }
-
-            TodayTotalSpend(
-                modifier = Modifier.padding(all = 20.dp),
-                todayTotalSpent = todayTotalSpend,
-            )
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            Text(
-                text = "Add a new Expense",
-                fontWeight = FontWeight.Bold,
-            )
-
-            TitleInput()
-            AmountInput()
-
-            Row(
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly,
+                    .fillMaxSize()
+                    .background(Color.White),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceEvenly,
             ) {
-                CategoryDropdown(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(4.dp),
+
+                when (uiState) {
+                    is LOADING -> Box(modifier = Modifier.fillMaxSize()) { CircularProgressIndicator() }
+                    is SUCCESS -> {
+                        successAnimationVisible.value = true
+                        LaunchedEffect(Unit) {
+                            Toast.makeText(context, "Expense added", Toast.LENGTH_SHORT).show()
+                            kotlinx.coroutines.delay(2500) // show animation for 2 seconds
+                            successAnimationVisible.value = false
+                            viewModel.updateExpenseEntryScreenUiState(IDLE)
+                        }
+                    }
+
+                    is ERROR -> {
+                        Toast.makeText(context, uiState.errorMsg, Toast.LENGTH_SHORT).show()
+                        viewModel.updateExpenseEntryScreenUiState(IDLE)
+                    }
+
+                    IDLE -> {}
+                }
+
+                TodayTotalSpend(
+                    modifier = Modifier.padding(all = 20.dp),
+                    todayTotalSpent = todayTotalSpend,
                 )
 
-                DateSelector(
+                Spacer(modifier = Modifier.weight(1f))
+
+                Text(
+                    text = "Add a new Expense",
+                    fontWeight = FontWeight.Bold,
+                )
+
+                TitleInput()
+                AmountInput()
+
+                Row(
                     modifier = Modifier
-                        .weight(1f)
-                        .padding(4.dp),
-                    dateText = selectedDate,
-                ) { dateInMillis ->
-                    dateInMillis?.let { viewModel.updateSelectedDate(dateInMillis = it) }
+                        .fillMaxWidth()
+                        .padding(horizontal = 32.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                ) {
+                    CategoryDropdown(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(4.dp),
+                    )
+
+                    DateSelector(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(4.dp),
+                        dateText = selectedDate,
+                    ) { dateInMillis ->
+                        dateInMillis?.let { viewModel.updateSelectedDate(dateInMillis = it) }
+                    }
                 }
+
+                NotesInput()
+
+                ImagePickerSection {
+                    imagePicker.launch("image/*")
+                }
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                SubmitButton(viewModel = viewModel)
             }
 
-            NotesInput()
-
-            ImagePickerSection {
-                imagePicker.launch("image/*")
+            AnimatedVisibility(
+                visible = successAnimationVisible.value,
+                enter = fadeIn() + slideInVertically(),
+                exit = fadeOut() + slideOutVertically()
+            ) {
+                LottieAnimation(
+                    composition = composition,
+                    progress = { progress },
+                    modifier = Modifier.size(150.dp)
+                )
             }
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            SubmitButton(viewModel = viewModel)
         }
     }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(key1 = Unit) {
         viewModel.updateTodayTotalSpend()
     }
 }
