@@ -16,7 +16,7 @@ fun AmountInput() {
     OutlinedTextField(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 32.dp, vertical = 4.dp),
+            .padding(horizontal = 32.dp),
         value = state.amountText.value,
         onValueChange = {
             state.amountText.value = it

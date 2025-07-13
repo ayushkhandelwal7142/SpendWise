@@ -14,7 +14,7 @@ fun TitleInput() {
     OutlinedTextField(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 32.dp, vertical = 4.dp),
+            .padding(horizontal = 32.dp),
         value = state.title.value,
         onValueChange = {
             state.title.value = it

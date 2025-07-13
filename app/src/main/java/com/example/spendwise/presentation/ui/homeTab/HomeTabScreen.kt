@@ -94,7 +94,7 @@ fun HomeTabScreen(viewModel: ExpenseViewModel) {
                 .fillMaxSize()
                 .background(Color.White),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.SpaceEvenly,
         ) {
             when (uiState) {
                 is LOADING -> Box(modifier = Modifier.fillMaxSize()) { CircularProgressIndicator() }
@@ -129,7 +129,7 @@ fun HomeTabScreen(viewModel: ExpenseViewModel) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 32.dp, vertical = 4.dp),
+                    .padding(horizontal = 32.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly,
             ) {
