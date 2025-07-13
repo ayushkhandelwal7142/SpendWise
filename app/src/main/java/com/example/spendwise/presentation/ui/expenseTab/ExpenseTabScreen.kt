@@ -74,7 +74,8 @@ fun ExpenseTabScreen(viewModel: ExpenseViewModel) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(8.dp),
+                .padding(8.dp)
+                .background(color = Color.White),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             stickyHeader {

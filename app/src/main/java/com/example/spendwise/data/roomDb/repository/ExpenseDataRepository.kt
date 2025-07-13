@@ -8,8 +8,6 @@ class ExpenseDataRepository(
 ) {
     suspend fun addExpenseData(data: ExpenseEntity) = expenseDao.addExpenseData(data = data)
 
-    fun getExpenseData() = expenseDao.getExpenseData()
-
     fun getExpensesForDate(startDate: Long, endDate: Long) =
         expenseDao.getExpensesBetweenDates(
             startOfDay = startDate,
@@ -20,4 +18,9 @@ class ExpenseDataRepository(
         expenseDao.getExpenseListForParticularCategory(category = category)
 
     fun getTotalAmountCategoryWise() = expenseDao.getTotalAmountCategoryWise()
+
+    suspend fun insertAllExpenses(expenses: List<ExpenseEntity>) {
+        expenseDao.insertAll(expenses)
+    }
+
 }

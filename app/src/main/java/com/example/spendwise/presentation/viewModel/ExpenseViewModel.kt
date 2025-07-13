@@ -1,11 +1,8 @@
 package com.example.spendwise.presentation.viewModel
 
-import android.content.Context
-import android.net.Uri
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.spendwise.data.roomDb.model.CategoryWiseSpendModel
@@ -17,13 +14,12 @@ import com.example.spendwise.presentation.viewModel.uiState.ExpenseUiInteraction
 import com.example.spendwise.presentation.viewModel.uiState.UiState
 import com.example.spendwise.presentation.viewModel.uiState.UiState.ERROR
 import com.example.spendwise.presentation.viewModel.uiState.UiState.SUCCESS
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileOutputStream
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -58,6 +54,12 @@ class ExpenseViewModel(
 
     fun getTodayDate(): String {
         return LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+    }
+
+    fun insertMockExpenses(expenses: List<ExpenseEntity>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            expenseDataRepository.insertAllExpenses(expenses)
+        }
     }
 
     fun getExpenseListForParticularDate(dateInMillis: Long) {
@@ -163,24 +165,5 @@ class ExpenseViewModel(
     fun updateSelectedDate(dateInMillis: Long) {
         val date = expenseUseCase.convertDateInMillisToLocalDate(dateInMillis = dateInMillis)
         _expenseUiInteractionState.update { it.copy(selectedDateText = date) }
-    }
-
-    fun saveReceiptImage(context: Context, imageUri: Uri) {
-        val inputStream = context.contentResolver.openInputStream(imageUri)
-        val file = File(context.filesDir, "receipt_${System.currentTimeMillis()}.jpg")
-        val outputStream = FileOutputStream(file)
-
-        inputStream?.copyTo(outputStream)
-
-        inputStream?.close()
-        outputStream.close()
-
-        val fileUri = file.toUri()
-
-        updateReceiptImageUri(uri = fileUri.toString())
-    }
-
-    fun clearImageUri() {
-        _expenseUiInteractionState.update { it.copy(newExpenseImageUrl = null) }
     }
 }

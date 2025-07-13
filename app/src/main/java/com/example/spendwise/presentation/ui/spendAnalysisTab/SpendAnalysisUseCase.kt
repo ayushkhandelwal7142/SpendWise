@@ -80,13 +80,13 @@ class SpendAnalysisUseCase {
         canvas.drawText("SpendWise Report", 200f, y.toFloat(), paint)
         y += 40
         canvas.drawText(
-            "Total Expense: ₹${String.format("%.2f", spendTotal)}",
+            "Today's Total Expense: ₹${String.format("%.2f", spendTotal)}",
             50f,
             y.toFloat(),
             paint
         )
         y += 30
-        canvas.drawText("Category-wise Spend:", 50f, y.toFloat(), paint)
+        canvas.drawText("Category-wise Overall Spend:", 50f, y.toFloat(), paint)
         y += 30
 
         categoryWiseSpend.forEach {

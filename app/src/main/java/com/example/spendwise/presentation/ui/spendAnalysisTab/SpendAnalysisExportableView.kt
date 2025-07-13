@@ -29,7 +29,7 @@ fun createSpendAnalysisExportableView(
     container.addView(title)
 
     val totalSpend = TextView(context).apply {
-        text = "Total Expense: ₹${String.format("%.2f", spendTotal)}"
+        text = "Today's Total Expense: ₹${String.format("%.2f", spendTotal)}"
         textSize = 16f
         setPadding(0, 0, 0, 16)
         setTextColor(ContextCompat.getColor(context, android.R.color.black))
@@ -37,7 +37,7 @@ fun createSpendAnalysisExportableView(
     container.addView(totalSpend)
 
     val categoryTitle = TextView(context).apply {
-        text = "Category-wise Spend:"
+        text = "Category-wise Overall Spend:"
         textSize = 16f
         setPadding(0, 0, 0, 8)
         setTextColor(ContextCompat.getColor(context, android.R.color.black))

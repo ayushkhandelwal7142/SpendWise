@@ -33,6 +33,7 @@ import com.example.spendwise.presentation.ui.expenseTab.ExpenseTabScreen
 import com.example.spendwise.presentation.ui.spendAnalysisTab.SpendAnalysisTabScreen
 import com.example.spendwise.presentation.ui.switchThemeTab.ThemeScreen
 import com.example.spendwise.presentation.viewModel.ExpenseViewModel
+import com.example.spendwise.presentation.viewModel.useCase.MockDataInitializer
 import com.example.spendwise.ui.theme.SpendWiseTheme
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -46,7 +47,10 @@ class MainActivity : ComponentActivity() {
             expenseUseCase = useCase,
             expenseDataRepository = repository,
         )
-
+        MockDataInitializer.populateIfFirstLaunch(
+            context = this,
+            viewModel = viewModel,
+        )
         enableEdgeToEdge()
         setContent {
             var isDarkTheme by remember { mutableStateOf(false) }

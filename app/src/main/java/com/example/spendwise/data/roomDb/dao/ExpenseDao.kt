@@ -2,6 +2,7 @@ package com.example.spendwise.data.roomDb.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.spendwise.data.roomDb.model.ExpenseEntity
 import com.example.spendwise.data.roomDb.model.CategoryWiseSpendModel
@@ -10,7 +11,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ExpenseDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(expenses: List<ExpenseEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addExpenseData(data: ExpenseEntity)
 
     @Query("SELECT * FROM expenseData")
