@@ -93,8 +93,7 @@ This project was built using an AI-first workflow. Here’s how AI tools were us
 ---
 
 ## 📷 Screenshots
-
-> *Add optional screenshots here to showcase UI*
+ <img src = "[https://user-images.githubusercontent.com/102464852/161468643-4c71602e-39bc-4249-bfaf-8ad5dd812db3](https://github.com/user-attachments/assets/cadd40cd-0b9e-42de-9e83-9527be02c6c1).jpg" width = "250" height = "500">       
 
 ---
 
