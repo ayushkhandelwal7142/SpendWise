@@ -1,5 +1,9 @@
 # 💸 SpendWise - Smart Daily Expense Tracker
 
+<img src = "https://github.com/user-attachments/assets/b635a78b-43ed-4cca-9acd-2112938b7bd8" width = "250" height = "500">
+<img src = "https://github.com/user-attachments/assets/df098205-311f-4524-ac72-8188754e6005" width = "250" height = "500">
+
+
 A full-featured Jetpack Compose-based Expense Tracking module built for small business owners to easily record, analyze, and export daily expenses.
 
 ---
