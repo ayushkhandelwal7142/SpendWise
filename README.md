@@ -102,4 +102,4 @@ This project was built using an AI-first workflow. Here’s how AI tools were us
 
 1. Clone the repo:
    ```bash
-   git clone https://github.com/ayushkhandelwal7142/SpensWise.git
+   git clone https://github.com/ayushkhandelwal7142/SpendWise.git
