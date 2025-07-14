@@ -1,10 +1,14 @@
 # 💸 SpendWise - Smart Daily Expense Tracker
 
+## 📷 Screenshots
+
 <img src = "https://github.com/user-attachments/assets/b635a78b-43ed-4cca-9acd-2112938b7bd8" width = "250" height = "500">
 <img src = "https://github.com/user-attachments/assets/df098205-311f-4524-ac72-8188754e6005" width = "250" height = "500">
 <img src = "https://github.com/user-attachments/assets/f252849c-9d0c-4d85-aaf9-fbcc2da8d79d" width = "250" height = "500">
 <img src = "https://github.com/user-attachments/assets/95d8d060-271b-4f3d-b2c1-e4991c63e067" width = "250" height = "500">
+<img src = "https://github.com/user-attachments/assets/40e425c3-e8f9-48bd-9957-93b7ae65ab6c" width = "250" height = "500">
 
+------
 
 A full-featured Jetpack Compose-based Expense Tracking module built for small business owners to easily record, analyze, and export daily expenses.
 
@@ -95,11 +99,6 @@ This project was built using an AI-first workflow. Here’s how AI tools were us
 | Animations       | Lottie Compose            |
 | Charting         | Custom Compose Bar Chart  |
 | Share/Export     | FileProvider + PDF APIs   |
-
----
-
-## 📷 Screenshots
-<img src = "https://github.com/user-attachments/assets/f252849c-9d0c-4d85-aaf9-fbcc2da8d79d" width = "250" height = "500">
 
 ---
 
