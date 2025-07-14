@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -28,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.spendwise.data.roomDb.model.ExpenseCategoryEnum
 import com.example.spendwise.presentation.model.ExpenseTabScreenState
 import com.example.spendwise.presentation.viewModel.ExpenseViewModel
@@ -129,8 +131,15 @@ fun ExpenseTabScreen(viewModel: ExpenseViewModel) {
 
             item { Spacer(modifier = Modifier.padding(8.dp)) }
 
-            expenseList?.let {
-                itemsIndexed(it) { index, item ->
+            if (expenseList.isNullOrEmpty()) {
+                item {
+                    Text(
+                        text = "No Data",
+                        fontSize = 20.sp,
+                    )
+                }
+            } else {
+                itemsIndexed(expenseList) { index, item ->
                     ExpenseItem(
                         title = item.title,
                         amount = item.amount,
