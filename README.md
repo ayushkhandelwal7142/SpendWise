@@ -95,7 +95,7 @@ This project was built using an AI-first workflow. Here’s how AI tools were us
 | UI               | Jetpack Compose           |
 | State Mgmt       | ViewModel + StateFlow     |
 | Navigation       | Jetpack Compose Navigation|
-| Local Storage    | Room DB (optional)        |
+| Local Storage    | Room DB                   |
 | Animations       | Lottie Compose            |
 | Charting         | Custom Compose Bar Chart  |
 | Share/Export     | FileProvider + PDF APIs   |
