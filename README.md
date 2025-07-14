@@ -93,7 +93,7 @@ This project was built using an AI-first workflow. Here’s how AI tools were us
 ---
 
 ## 📷 Screenshots
-![img1](https://github.com/user-attachments/assets/f252849c-9d0c-4d85-aaf9-fbcc2da8d79d)
+<img src = "https://github.com/user-attachments/assets/f252849c-9d0c-4d85-aaf9-fbcc2da8d79d" width = "250" height = "500">
 
 ---
 
