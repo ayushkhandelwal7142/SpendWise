@@ -20,37 +20,57 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.spendwise.data.roomDb.repository.ExpenseDataRepository
+import com.example.spendwise.data.ExpenseDataRepository
+import com.example.spendwise.data.firestoreDb.usecase.FirestoreUseCase
 import com.example.spendwise.data.roomDb.database.ExpenseDatabase
 import com.example.spendwise.domain.ExpenseUseCase
 import com.example.spendwise.presentation.model.BottomNavItem
-import com.example.spendwise.presentation.ui.homeTab.HomeTabScreen
 import com.example.spendwise.presentation.ui.expenseTab.ExpenseTabScreen
+import com.example.spendwise.presentation.ui.homeTab.HomeTabScreen
 import com.example.spendwise.presentation.ui.spendAnalysisTab.SpendAnalysisTabScreen
 import com.example.spendwise.presentation.ui.switchThemeTab.ThemeScreen
 import com.example.spendwise.presentation.viewModel.ExpenseViewModel
 import com.example.spendwise.presentation.viewModel.useCase.MockDataInitializer
 import com.example.spendwise.ui.theme.SpendWiseTheme
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 class MainActivity : ComponentActivity() {
+    lateinit var viewModel: ExpenseViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         val expenseDao = ExpenseDatabase.buildDatabase(this)!!.getExpenseDao
-        val repository = ExpenseDataRepository(expenseDao = expenseDao)
+        val firestore = FirebaseFirestore.getInstance()
+        val firestoreUseCase = FirestoreUseCase(
+            expenseDao = expenseDao,
+            firestore = firestore,
+        )
         val useCase = ExpenseUseCase()
-        val viewModel = ExpenseViewModel(
+
+        val repository = ExpenseDataRepository(
+            expenseDao = expenseDao,
+            firestoreApi = firestoreUseCase,
+        )
+
+        viewModel = ExpenseViewModel(
             expenseUseCase = useCase,
             expenseDataRepository = repository,
         )
+
         MockDataInitializer.populateIfFirstLaunch(
             context = this,
             viewModel = viewModel,
         )
+
+        viewModel.syncWithFirestoreOnLaunch()
+
         enableEdgeToEdge()
         setContent {
             var isDarkTheme by remember { mutableStateOf(false) }
@@ -102,6 +122,13 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        lifecycleScope.launch {
+            viewModel.syncWithFireStoreOnClose()
         }
     }
 

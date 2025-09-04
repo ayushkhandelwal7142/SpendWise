@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.spendwise.data.roomDb.model.CategoryWiseSpendModel
 import com.example.spendwise.data.roomDb.model.ExpenseCategoryEnum
 import com.example.spendwise.data.roomDb.model.ExpenseEntity
-import com.example.spendwise.data.roomDb.repository.ExpenseDataRepository
+import com.example.spendwise.data.ExpenseDataRepository
 import com.example.spendwise.domain.ExpenseUseCase
 import com.example.spendwise.presentation.viewModel.uiState.ExpenseUiInteractionState
 import com.example.spendwise.presentation.viewModel.uiState.UiState
@@ -165,5 +165,18 @@ class ExpenseViewModel(
     fun updateSelectedDate(dateInMillis: Long) {
         val date = expenseUseCase.convertDateInMillisToLocalDate(dateInMillis = dateInMillis)
         _expenseUiInteractionState.update { it.copy(selectedDateText = date) }
+    }
+
+    fun syncWithFirestoreOnLaunch() {
+        viewModelScope.launch {
+            expenseDataRepository.syncFromFirestore()
+        }
+    }
+
+    fun syncWithFireStoreOnClose() {
+        Log.e("AYUSH::", "AYUSH:: sync with forestore on close")
+        viewModelScope.launch {
+            expenseDataRepository.addDummyExpenses(count = 10)
+        }
     }
 }
